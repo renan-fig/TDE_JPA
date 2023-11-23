@@ -25,9 +25,6 @@ public class AlunoRepository {
             transaction.commit();
 
         } catch (Exception e){
-            if (transaction != null && transaction.isActive()) {
-                transaction.rollback();
-            }
             throw new RuntimeException("Erro ao inserir o aluno: " + aluno.getNome(), e);
         } finally {
             em.close();
@@ -46,9 +43,6 @@ public class AlunoRepository {
             transaction.commit();
 
         } catch (Exception e){
-            if (transaction != null && transaction.isActive()) {
-                transaction.rollback();
-            }
             throw new RuntimeException("Erro ao remover o aluno: " + aluno.getNome(), e);
         } finally {
             em.close();
@@ -70,9 +64,6 @@ public class AlunoRepository {
             return aluno1;
 
         } catch (Exception e){
-            if (transaction != null && transaction.isActive()) {
-                transaction.rollback();
-            }
             throw new RuntimeException("Erro ao consultar o aluno: " + aluno.getNome(), e);
         } finally {
             em.close();

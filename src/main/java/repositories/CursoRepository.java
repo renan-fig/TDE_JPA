@@ -65,7 +65,7 @@ public class CursoRepository {
         }
     }
 
-    public void consultaAlunosCurso(EntityManagerFactory emf, Curso cursoProcurado) {
+    public void  consultaAlunosCurso(EntityManagerFactory emf, Curso cursoProcurado) {
 
         EntityManager em = emf.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
@@ -80,10 +80,14 @@ public class CursoRepository {
 
             List<Aluno> listaAlunos = query.getResultList();
 
-            System.out.println("LISTA DE ALUNOS:");
+            if(listaAlunos.isEmpty()){
+                System.out.println("Nenhum aluno matriculado no curso!");
+            }else{
+                System.out.println("LISTA DE ALUNOS:");
 
-            for (Aluno aluno : listaAlunos) {
-                System.out.println(aluno);
+                for (Aluno aluno : listaAlunos) {
+                    System.out.println(aluno);
+                }
             }
 
         } catch (Exception e){
@@ -132,13 +136,9 @@ public class CursoRepository {
                     .getSingleResult();
 
             curso.getListaAlunos().add(alunoProcurado);
-
             transaction.commit();
 
         } catch (Exception e){
-            if (transaction != null && transaction.isActive()) {
-                transaction.rollback();
-            }
             throw new RuntimeException("Erro ao matricular aluno no curso: " + cursoProcurado.getDescricao(), e);
         } finally {
             em.close();
